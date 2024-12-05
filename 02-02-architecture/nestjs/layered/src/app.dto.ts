@@ -1,0 +1,12 @@
+export class CustomerDto {
+    id: number;
+    name: string;
+    address?: string;
+    orders?: OrderDto[]
+}
+
+export class OrderDto {
+    id: number;
+    customer_id: number;
+    product_id: string;
+}
