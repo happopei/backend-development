@@ -1,5 +1,5 @@
-from typing import Dict, Any, List, Tuple
-from order.model import OrderRepository, Order
+from typing import List
+from .model import OrderRepository, Order
 
 class OrderService:
     def __init__(self):

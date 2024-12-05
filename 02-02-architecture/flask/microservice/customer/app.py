@@ -1,5 +1,5 @@
 from flask import Flask
-from customer.presentation import CustomerAPI, api
+from src.presentation import CustomerAPI, api
 
 def create_app():
     app = Flask(__name__)

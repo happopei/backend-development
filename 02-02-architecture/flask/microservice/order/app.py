@@ -1,14 +1,14 @@
 from flask import Flask
-from customer.presentation import CustomerAPI, api
+from src.presentation import OrderAPI, api
 
 def create_app():
     app = Flask(__name__)
     
     # Setup dependencies
-    customer_api = CustomerAPI()
+    order_api = OrderAPI()
     
     # Register routes
-    customer_api.register_routes(api)
+    order_api.register_routes(api)
     app.register_blueprint(api, url_prefix='/api')
     
     return app
