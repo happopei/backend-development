@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRole } from './constants';
 
 const users = [
-  { id: 1, username: 'admin', password: 'admin123', role: [UserRole.ADMIN] },
-  { id: 2, username: 'manager', password: 'manager123', role: [UserRole.MANAGER] },
-  { id: 3, username: 'user', password: 'user123', role: [UserRole.USER] },
+  { id: 1, username: 'admin', password: 'admin123', role: UserRole.ADMIN },
+  { id: 2, username: 'manager', password: 'manager123', role: UserRole.MANAGER },
+  { id: 3, username: 'user', password: 'user123', role: UserRole.USER },
 ];
 
 @Injectable()
@@ -17,7 +17,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload = { username: user.username, sub: user.id };
+    const payload = { id: user.id, username: user.username, role: user.role }; 
     return {
       access_token: this.jwtService.sign(payload),
     };

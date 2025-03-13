@@ -19,6 +19,7 @@ export class BookingController {
   @Get('user')
   @Roles(UserRole.USER)
   getUserBookings(@Request() req) {
+    console.log("Request", req);
     return this.bookingService.getUserBookings(req.user.username);
   }
 }
