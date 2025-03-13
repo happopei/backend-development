@@ -1,16 +1,24 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Request, Get, UseGuards } from '@nestjs/common';
+import { BookingService } from './booking.service';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../auth/constants';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('bookings')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class BookingController {
-  private bookings = [
-    { id: 1, user: 'user1', flight: 'AA123', destination: 'NYC' },
-    { id: 2, user: 'user2', flight: 'BA456', destination: 'LON' },
-  ];
+  constructor(private readonly bookingService: BookingService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@Req() req) {
-    return this.bookings;
+  @Roles(UserRole.ADMIN, UserRole.MANAGER)
+  getAllBookings() {
+    return this.bookingService.getAllBookings();
+  }
+
+  @Get('user')
+  @Roles(UserRole.USER)
+  getUserBookings(@Request() req) {
+    return this.bookingService.getUserBookings(req.user.username);
   }
 }
