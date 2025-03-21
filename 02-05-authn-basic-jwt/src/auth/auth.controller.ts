@@ -9,7 +9,7 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() body) {
-    this.logger.log(`Login attempt for user: ${body.password}`);
+    this.logger.log(`Login attempt for user: ${body.username}`);
     return this.authService.login(body.username, body.password);
   }
 }

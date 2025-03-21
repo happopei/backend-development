@@ -2,8 +2,9 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 const users = [
-  { id: 1, username: 'jane_doe', password: 'password' },
-  { id: 2, username: 'alice_teller', password: 'teller123' },
+  { id: 1, username: 'alice_teller', password: 'teller123', role: 'teller'},
+  { id: 2, username: 'jane_smith', password: 'password', role: 'customer' },
+  { id: 3, username: 'bob_smith', password: 'password', role: 'customer' },
 ];
 
 @Injectable()
@@ -17,6 +18,7 @@ export class AuthService {
   }
 
   async login(username: string, password: string): Promise<{ access_token: string }> {
+
     const validatedUser = await this.validateUser(username, password);
     if (!validatedUser) {
       throw new UnauthorizedException('Invalid credentials');
