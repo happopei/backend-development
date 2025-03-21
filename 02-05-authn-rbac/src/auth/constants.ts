@@ -3,8 +3,7 @@ export const jwtConstants = {
   };
 
 export enum UserRole {
-    ADMIN = 'admin',
-    USER = 'user',
-    MANAGER = 'manager',
+    TELLER = 'teller',
+    CUSTOMER = 'customer',
   }
   
