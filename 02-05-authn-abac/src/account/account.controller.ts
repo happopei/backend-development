@@ -1,20 +1,19 @@
-import { Param, Request, Controller, Post, Get, UseGuards, UseInterceptors} from '@nestjs/common';
+import { Request, Controller, Post, Get, UseGuards, UseInterceptors} from '@nestjs/common';
 import { AccountService } from './account.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ABACGuard } from '../auth/abac.guard';
-import { AccountInterceptor } from './account.interceptor';
+import { ABAC } from '../auth/abac.decorator';
 
 @Controller('accounts')
-@UseGuards(JwtAuthGuard)
+ 
+@UseGuards(JwtAuthGuard,ABACGuard)
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Get(':username')
-  @UseInterceptors(AccountInterceptor)  
-  @UseGuards(ABACGuard)
+  @Get(':accountId')
+  @ABAC('account') 
   viewAccount(@Request() req) {
-    const account = req['account'];  // The account is now available
-    console.log('Account:', account);  // Log the account for debugging
+    const account = req['account'];  
     return account;
   }
 

@@ -9,8 +9,8 @@ export class AccountService {
         { id: 4, customer: 'john_davis', account_id: 'YT432', account_type: "savings", balance: 2000.00},
       ];
 
-  getAccount(username: string) {
-    const account = this.accounts.filter(a => a.customer == username);
+  getAccount(account_id: string) {
+    const account = this.accounts.find(a => a.account_id == account_id);
     return account; 
   }
 
