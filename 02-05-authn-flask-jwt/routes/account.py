@@ -9,9 +9,11 @@ accounts = [
 ]
 
 @account_blueprint.route('', methods=['GET'])
+@jwt_required()
 def get_accounts():
     return jsonify(accounts)
 
 @account_blueprint.route('', methods=['POST'])
+@jwt_required()
 def create_account():
     return jsonify({"message": "Account successfully created"}), 201
