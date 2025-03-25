@@ -4,7 +4,7 @@ from routes.auth import auth_blueprint
 # from routes.account import account_blueprint
 
 app = Flask(__name__)
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Replace in prod!
+app.config["JWT_SECRET_KEY"] = "secret123"  # Replace in prod!
 jwt = JWTManager(app)
 
 # Register blueprints (modules)
@@ -12,4 +12,5 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 # app.register_blueprint(account_blueprint, url_prefix='/accounts')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost')
+    print("Main")
+    app.run(debug=True)

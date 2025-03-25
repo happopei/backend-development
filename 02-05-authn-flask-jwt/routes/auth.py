@@ -13,9 +13,11 @@ users = [
 def login():
     username = request.json.get('username')
     password = request.json.get('password')
-    print(f"Current User: {password}") 
+
+    print(f"Current User: {username}") 
     user = next((u for u in users if u['username'] == username), None)
     if username != user["username"] or password != user["password"]:
         return jsonify({"msg": "Invalid credentials"}), 401
+
     access_token = create_access_token(identity={"username": user['username']})
     return jsonify(access_token=access_token)
