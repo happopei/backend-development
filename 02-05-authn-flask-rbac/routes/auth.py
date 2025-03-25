@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-from werkzeug.security import check_password_hash
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -16,8 +15,8 @@ def login():
 
     print(f"Current User: {username}") 
     user = next((u for u in users if u['username'] == username), None)
-    if username != user["username"] or password != user["password"]:
+    if username == user["username"] and password == user["password"]:
+        access_token = create_access_token(identity=user['username'], additional_claims={"role": user['role']})
+        return jsonify(access_token=access_token), 200
+    else:
         return jsonify({"msg": "Invalid credentials"}), 401
-        
-    access_token = create_access_token(identity={"username": user['username']})
-    return jsonify(access_token=access_token)

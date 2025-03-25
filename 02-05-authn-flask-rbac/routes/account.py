@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
-# from flask_jwt_extended import jwt_required, get_jwt_identity
-# from utils.guards import role_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from guards.rbac import roles_required
 
 account_blueprint = Blueprint('account', __name__)
 
@@ -10,10 +10,13 @@ accounts = [
 ]
 
 @account_blueprint.route('', methods=['GET'])
-# @jwt_required()
-# @role_required('customer')  # Only customers can view their accounts
-def view_account():
-    # current_user = get_jwt_identity()
-    print("Decoded JWT identity:", current_user)  # For debugging
-    user_accounts = [a for a in accounts if a['customer'] == current_user['username']]
-    return jsonify(user_accounts)
+@jwt_required()
+@roles_required("customer", "teller")
+def get_accounts():
+    return jsonify(accounts)
+
+@account_blueprint.route('', methods=['POST'])
+@jwt_required()
+@roles_required("teller")
+def create_account():
+    return jsonify({"message": "Account successfully created"}), 201
