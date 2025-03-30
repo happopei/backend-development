@@ -8,12 +8,13 @@ import { UserRole } from '../auth/constants';
 @Controller('accounts')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AccountController {
-  constructor(private readonly accountService: AccountService) {}
+  constructor(private readonly accountService: AccountService) { }
 
   @Get()
   @Roles(UserRole.TELLER, UserRole.CUSTOMER)
   viewAccounts(@Request() req) {
-    return this.accountService.getAccount(req.user.username);
+    let accounts = this.accountService.getAccount();
+    return accounts.filter(a => a.customer_id == req.user.userId);
   }
 
   @Post()
