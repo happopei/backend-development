@@ -1,19 +1,21 @@
+// guards/abac.guard.ts
+
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
+import { AccountService } from '../account/account.service';
 import { UserRole } from './constants';
 
-
 @Injectable()
-export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) { }
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+export class ABACGuard implements CanActivate {
+  constructor(
+    private reflector: Reflector,
+  ) { }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>('roles', [
       context.getHandler(),
       context.getClass(),
     ]);
-
-    console.log("required Roles:", requiredRoles);
 
     if (!requiredRoles || requiredRoles.length === 0) {
       return true; // If no roles are required, allow access
@@ -31,6 +33,18 @@ export class RolesGuard implements CanActivate {
       throw new ForbiddenException(`Access denied: Role '${user.role}' not allowed`);
     }
 
+    if (!this.isWeekday()) {
+      throw new ForbiddenException(`Access denied: Not allowed to access during outside weekday.`);
+    }
+
     return true;
+  }
+
+  isWeekday(): boolean {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
+
+    // Check if day is between Monday (1) and Friday (5) inclusive
+    return dayOfWeek >= 1 && dayOfWeek <= 6;
   }
 }
