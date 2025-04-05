@@ -20,5 +20,4 @@ def get_accounts():
 @jwt_required()
 @roles_required("teller")
 def create_account():
-    print("HELLO!!!!!!")
     return jsonify({"message": "Account successfully created"}), 201
