@@ -5,8 +5,9 @@ from guards.rbac import roles_required
 account_blueprint = Blueprint('account', __name__)
 
 accounts = [
-    {"customer": "jane_smith", "account_id": "AA123", "balance": 1000},
-    {"customer": "bob_smith", "account_id": "BB456", "balance": 2000}
+    { 'id': 1, 'customer': 'jane_doe', 'account_id': 'AA123', 'account_type': "chequing", 'balance': 1000.00 },
+    { 'id': 2, 'customer': 'jane_doe', 'account_id': 'BA456', 'account_type': "savings", 'balance': 5000.00 },
+    { 'id': 3, 'customer': 'jane_smith', 'account_id': 'BA344', 'account_type': "savings", 'balance': 5000.00 },
 ]
 
 @account_blueprint.route('', methods=['GET'])
@@ -19,4 +20,5 @@ def get_accounts():
 @jwt_required()
 @roles_required("teller")
 def create_account():
+    print("HELLO!!!!!!")
     return jsonify({"message": "Account successfully created"}), 201
