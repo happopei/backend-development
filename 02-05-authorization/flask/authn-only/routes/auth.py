@@ -4,8 +4,10 @@ from flask_jwt_extended import create_access_token
 auth_blueprint = Blueprint('auth', __name__)
 
 users = [
-    {"username": "alice_teller", "password": "teller123", "role": "teller"},
-    {"username": "jane_smith", "password": "password", "role": "customer"}
+  { 'id': 1, 'username': 'alice_teller', 'password': 'teller123' },
+  { 'id': 2, 'username': 'jane_smith', 'password': 'password' },
+  { 'id': 3, 'username': 'bob_smith', 'password': 'password' },
+  { 'id': 4, 'username': 'jane_doe', 'password': 'password' },
 ]
 
 @auth_blueprint.route('/login', methods=['POST'])
