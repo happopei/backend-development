@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nestjs-api
+  labels:
+    app: nestjs-api
+spec:
+  containers:
+    - name: nestjs-api
+      image: nest-api:latest
+      ports:
+        - containerPort: 3000

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: postgres, labels: { app: postgres } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: postgres } }
+  template:
+    metadata: { labels: { app: postgres } }
+    spec:
+      volumes: [{ name: data, emptyDir: {} }]
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports: [{ name: pg, containerPort: 5432 }]
+          env:
+            - name: POSTGRES_DB     ; valueFrom: { secretKeyRef: { name: app-secrets, key: DB_NAME } }
+            - name: POSTGRES_USER   ; valueFrom: { secretKeyRef: { name: app-secrets, key: DB_USER } }
+            - name: POSTGRES_PASSWORD ; valueFrom: { secretKeyRef: { name: app-secrets, key: DB_PASS } }
+          volumeMounts: [{ name: data, mountPath: /var/lib/postgresql/data }]
+          readinessProbe: { tcpSocket: { port: 5432 }, initialDelaySeconds: 5, periodSeconds: 5 }
