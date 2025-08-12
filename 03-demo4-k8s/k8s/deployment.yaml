@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nestjs-hello
+  labels:
+    app: nestjs-hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nestjs-hello
+  template:
+    metadata:
+      labels:
+        app: nestjs-hello
+    spec:
+      containers:
+        - name: app
+          image: nestjs-hello:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 20
