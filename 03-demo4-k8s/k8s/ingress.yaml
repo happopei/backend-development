@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nestjs-hello
+  labels:
+    app: nestjs-hello
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: nestjs-hello.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nestjs-hello     # must match your Service
+                port:
+                  number: 3000         # must match Service.spec.ports.port
